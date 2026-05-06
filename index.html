@@ -1,0 +1,345 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Leaf, 
+  Search, 
+  ShoppingCart, 
+  MessageSquare, 
+  Thermometer, 
+  Droplets, 
+  Sun, 
+  History, 
+  ChevronRight,
+  User,
+  Star,
+  Camera,
+  Activity,
+  Calendar
+} from 'lucide-react';
+
+// --- 產品數據定義 ---
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "南庄頂級鮮採桂竹筍",
+    price: 280,
+    tag: "AI 鮮度監測",
+    image: "https://images.unsplash.com/photo-1599148400620-8e1ff0bf28d8?auto=format&fit=crop&q=80&w=400",
+    desc: "產地直送，AI 預測最佳鮮甜採收期。"
+  },
+  {
+    id: 2,
+    name: "紅棗數據化契作組合",
+    price: 580,
+    tag: "完整生長日誌",
+    image: "https://images.unsplash.com/photo-1605333396915-47ed6b68a00e?auto=format&fit=crop&q=80&w=400",
+    desc: "從綠熟到全紅的完整數位紀錄，營養價值最高。"
+  },
+  {
+    id: 3,
+    name: "手工手撕筍乾",
+    price: 350,
+    tag: "傳統工法",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400",
+    desc: "傳承客家古法，結合現代 AI 低溫烘培技術。"
+  }
+];
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [ripeness, setRipeness] = useState(72.5); // 紅棗成熟度動態數據
+
+  // 模擬 AI 即時監測數據更新
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRipeness(prev => (parseFloat(prev) + 0.01).toFixed(2));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#F8FAF8] font-sans text-slate-800">
+      {/* 1. 導覽列 */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100 px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('home')}>
+          <div className="bg-emerald-800 p-2 rounded-xl text-white">
+            <Leaf size={24} />
+          </div>
+          <div>
+            <span className="text-xl font-black tracking-tight text-emerald-900 block leading-none">南庄智匯山林</span>
+            <span className="text-[10px] text-emerald-600 font-bold tracking-[0.2em]">NANJIAO SMART HERITAGE</span>
+          </div>
+        </div>
+        
+        <div className="hidden md:flex gap-10 font-bold text-slate-600">
+          <button onClick={() => setActiveTab('home')} className={activeTab === 'home' ? 'text-emerald-700 border-b-2 border-emerald-700' : 'hover:text-emerald-600'}>首頁</button>
+          <button onClick={() => setActiveTab('monitor')} className={activeTab === 'monitor' ? 'text-emerald-700 border-b-2 border-emerald-700' : 'hover:text-emerald-600'}>生長監控</button>
+          <button onClick={() => setActiveTab('shop')} className={activeTab === 'shop' ? 'text-emerald-700 border-b-2 border-emerald-700' : 'hover:text-emerald-600'}>智慧商城</button>
+        </div>
+
+        <div className="flex items-center gap-5 text-slate-500">
+          <Search size={20} className="cursor-pointer hover:text-emerald-600" />
+          <div className="relative cursor-pointer hover:text-emerald-600">
+            <ShoppingCart size={20} />
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+          </div>
+          <User size={20} className="cursor-pointer" />
+        </div>
+      </nav>
+
+      <main>
+        {/* 2. 首頁 Hero */}
+        {activeTab === 'home' && (
+          <div className="animate-in fade-in duration-1000">
+            <section className="relative h-[600px] flex items-center px-8">
+              <img 
+                src="https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?auto=format&fit=crop&q=80&w=1600" 
+                className="absolute inset-0 w-full h-full object-cover brightness-[0.4]"
+                alt="Nanjiao Forest"
+              />
+              <div className="relative z-10 max-w-3xl">
+                <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-300 px-4 py-1 rounded-full text-sm font-bold mb-6">
+                  <Activity size={16} /> AI 轉型 · 在地文化保存計畫
+                </div>
+                <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                  讓每一口鮮美，<br /><span className="text-emerald-400">都有 AI 與歷史</span>的見證。
+                </h1>
+                <p className="text-lg text-emerald-50 text-opacity-80 mb-10 max-w-xl leading-relaxed">
+                  結合 24 小時監控、AI 諮詢服務與南庄古道維護日誌。我們不僅賣產品，更邀您參與這片土地的數位新生。
+                </p>
+                <div className="flex gap-4">
+                  <button onClick={() => setActiveTab('shop')} className="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl font-bold transition-all shadow-lg shadow-emerald-900/20">立即選購</button>
+                  <button onClick={() => setActiveTab('monitor')} className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-xl font-bold transition-all">查看生長實況</button>
+                </div>
+              </div>
+            </section>
+
+            {/* 3. 核心功能快選 */}
+            <section className="max-w-7xl mx-auto py-20 px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-8 rounded-3xl border border-emerald-50 shadow-sm hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mb-6"><MessageSquare /></div>
+                <h3 className="text-2xl font-bold mb-4">AI 轉型諮詢</h3>
+                <p className="text-slate-500 mb-6">整合 LLM 技術，為您解決從食譜、保存到產業轉型的所有疑問。</p>
+                <button className="text-emerald-600 font-bold inline-flex items-center hover:gap-2 transition-all">開始對話 <ChevronRight size={18} /></button>
+              </div>
+              <div className="bg-white p-8 rounded-3xl border border-emerald-50 shadow-sm hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-red-50 text-red-700 rounded-2xl flex items-center justify-center mb-6"><Camera /></div>
+                <h3 className="text-2xl font-bold mb-4">紅棗生長實況</h3>
+                <p className="text-slate-500 mb-6">利用視覺辨識技術，精準捕捉每一顆紅棗從綠轉紅的高光時刻。</p>
+                <button onClick={() => setActiveTab('monitor')} className="text-red-600 font-bold inline-flex items-center hover:gap-2 transition-all">即時觀看 <ChevronRight size={18} /></button>
+              </div>
+              <div className="bg-white p-8 rounded-3xl border border-emerald-50 shadow-sm hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-6"><History /></div>
+                <h3 className="text-2xl font-bold mb-4">文化遺產計畫</h3>
+                <p className="text-slate-500 mb-6">每一筆消費，都將提撥固定比例投入南庄採筍古道數位典藏工作。</p>
+                <button className="text-amber-700 font-bold inline-flex items-center hover:gap-2 transition-all">了解更多 <ChevronRight size={18} /></button>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* 4. 生長監控頁面 (新功能) */}
+        {activeTab === 'monitor' && (
+          <div className="max-w-7xl mx-auto py-16 px-6 animate-in slide-in-from-bottom-8 duration-700">
+            <h2 className="text-4xl font-black mb-2">產地視覺化監控</h2>
+            <p className="text-slate-500 mb-10">AI 技術驅動的透明化溯源系統</p>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 bg-slate-900 rounded-3xl overflow-hidden relative group aspect-video">
+                <img 
+                  src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=1000" 
+                  className="w-full h-full object-cover opacity-70"
+                  alt="Live Orchard"
+                />
+                <div className="absolute top-6 left-6 flex items-center gap-2 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+                  <div className="w-2 h-2 bg-white rounded-full"></div> LIVE: 南庄一號紅棗園
+                </div>
+                <div className="absolute bottom-6 left-6 text-white">
+                  <div className="text-sm font-bold opacity-80">當前焦點：紅棗轉色監控區</div>
+                  <div className="text-xs opacity-60">影像編號：NJ-2024-X12</div>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="bg-white p-6 rounded-3xl border border-emerald-100 shadow-sm">
+                  <h4 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <Sun className="text-amber-500" /> AI 成熟度分析
+                  </h4>
+                  <div className="text-5xl font-black text-emerald-900 mb-2">{ripeness}%</div>
+                  <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden mb-4">
+                    <div className="bg-gradient-to-r from-emerald-500 to-red-500 h-full transition-all duration-500" style={{ width: `${ripeness}%` }}></div>
+                  </div>
+                  <div className="text-sm text-slate-500 flex justify-between font-medium">
+                    <span>綠熟期</span>
+                    <span className="text-red-500">全熟採收期</span>
+                  </div>
+                </div>
+
+                <div className="bg-emerald-900 p-6 rounded-3xl text-white">
+                  <h4 className="font-bold mb-4 flex items-center gap-2 text-emerald-300">
+                    <Calendar size={18} /> AI 採收預測
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                      <span className="text-sm opacity-70">預計高峰期</span>
+                      <span className="font-bold">7 月 15 日</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                      <span className="text-sm opacity-70">最佳採購日</span>
+                      <span className="font-bold">7 月 20 日</span>
+                    </div>
+                    <button className="w-full bg-emerald-500 text-white py-3 rounded-xl font-bold mt-2 hover:bg-emerald-400 transition-colors">
+                      訂閱成熟通報
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 5. 智慧商城頁面 */}
+        {activeTab === 'shop' && (
+          <div className="max-w-7xl mx-auto py-16 px-6 animate-in slide-in-from-bottom-8 duration-700">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+              <div>
+                <h2 className="text-4xl font-black mb-2">智慧商城</h2>
+                <p className="text-slate-500">根據今日 AI 產地日誌與氣候數據精選之品項</p>
+              </div>
+              <div className="flex gap-2">
+                {['全部', '生鮮', '加工', '組合'].map(cat => (
+                  <button key={cat} className="px-6 py-2 rounded-full border border-slate-200 font-bold hover:bg-emerald-800 hover:text-white transition-all text-sm">
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {PRODUCTS.map(product => (
+                <div key={product.id} className="group bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all">
+                  <div className="h-72 relative">
+                    <img src={product.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={product.name} />
+                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-1 rounded-full text-xs font-black text-emerald-800">
+                      {product.tag}
+                    </div>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-bold mb-2 group-hover:text-emerald-700 transition-colors">{product.name}</h3>
+                    <p className="text-slate-500 text-sm mb-6 leading-relaxed">{product.desc}</p>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <span className="text-sm text-slate-400 block font-bold">優惠價</span>
+                        <span className="text-3xl font-black text-emerald-900">NT$ {product.price}</span>
+                      </div>
+                      <button className="bg-emerald-800 text-white p-4 rounded-2xl hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-900/10">
+                        <ShoppingCart size={24} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* 6. AI 諮詢浮動組件 */}
+      <div className="fixed bottom-10 right-10 z-[100]">
+        <button 
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="bg-emerald-800 text-white w-16 h-16 rounded-3xl shadow-2xl flex items-center justify-center hover:rotate-12 transition-all cursor-pointer relative overflow-hidden group"
+        >
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 to-transparent opacity-0 group-hover:opacity-30 transition-opacity"></div>
+          <MessageSquare size={28} />
+        </button>
+
+        {isChatOpen && (
+          <div className="absolute bottom-20 right-0 w-[380px] bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-emerald-100 overflow-hidden animate-in zoom-in slide-in-from-right-10 duration-300">
+            <div className="bg-emerald-800 p-6 text-white">
+              <div className="flex justify-between items-center mb-1">
+                <h3 className="text-xl font-bold">AI 智匯助理</h3>
+                <button onClick={() => setIsChatOpen(false)} className="text-emerald-300 hover:text-white">✕</button>
+              </div>
+              <p className="text-xs text-emerald-200">正在連接南庄產地大數據...</p>
+            </div>
+            
+            <div className="h-96 p-6 overflow-y-auto space-y-6 bg-slate-50/50">
+              <div className="flex gap-3">
+                <div className="w-8 h-8 bg-emerald-800 rounded-lg flex items-center justify-center text-white shrink-0"><Leaf size={16} /></div>
+                <div className="bg-white p-4 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100 leading-relaxed text-slate-700">
+                  您好！我是您的南庄數位導覽員。
+                  <br /><br />
+                  今日紅棗園日照充足，紅熟度已達 <span className="font-bold text-emerald-700">{ripeness}%</span>。想聽聽看這批紅棗與南庄古道的故事嗎？
+                </div>
+              </div>
+              
+              <div className="flex justify-end">
+                <div className="bg-emerald-700 text-white p-4 rounded-2xl rounded-tr-none text-sm font-medium shadow-md shadow-emerald-900/10">
+                  我有新鮮桂竹筍，推薦怎麼煮？
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="w-8 h-8 bg-emerald-800 rounded-lg flex items-center justify-center text-white shrink-0"><Leaf size={16} /></div>
+                <div className="bg-white p-4 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100 leading-relaxed text-slate-700">
+                  <span className="font-bold text-emerald-700">AI 主廚推薦：</span>
+                  <br />
+                  目前南庄桂竹筍正值清甜期，建議做「客家梅乾燉筍」。
+                  <br /><br />
+                  我已為您準備好食材清單與步驟，需要將梅乾菜加入購物車嗎？
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 bg-white border-t border-slate-100 flex gap-3">
+              <input 
+                type="text" 
+                placeholder="詢問食譜、紅棗生長或南庄文化..." 
+                className="flex-1 bg-slate-100 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all" 
+              />
+              <button className="bg-emerald-800 text-white p-3 rounded-2xl hover:bg-emerald-700 transition-colors">
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <footer className="bg-slate-900 text-slate-500 py-20 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div className="md:col-span-2">
+            <div className="flex items-center gap-2 text-white mb-6">
+              <Leaf className="text-emerald-500" />
+              <span className="text-2xl font-black uppercase tracking-widest">南庄智匯山林</span>
+            </div>
+            <p className="max-w-sm leading-relaxed">
+              自 2004 年起投入南庄產業資產維護計畫，2024 年正式啟動 AI 數位轉型。我們透過科技守護土地，讓文化遺產代代相傳。
+            </p>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-6 underline decoration-emerald-500 underline-offset-8">快速連結</h4>
+            <ul className="space-y-4 text-sm">
+              <li className="hover:text-emerald-400 cursor-pointer transition-colors">關於維護計畫</li>
+              <li className="hover:text-emerald-400 cursor-pointer transition-colors">AI 監測技術說明</li>
+              <li className="hover:text-emerald-400 cursor-pointer transition-colors">產地直送規範</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold mb-6 underline decoration-emerald-500 underline-offset-8">聯絡我們</h4>
+            <ul className="space-y-4 text-sm">
+              <li>苗栗縣南庄鄉特產園區</li>
+              <li>service@nanjiao-smart.com</li>
+              <li>+886-37-123456</li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto border-t border-white/5 mt-20 pt-8 text-xs text-center">
+          © 2024 南庄智匯山林數位實驗室. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;.
