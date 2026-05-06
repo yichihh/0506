@@ -1,0 +1,386 @@
+{\rtf1\ansi\ansicpg950\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import React, \{ useState, useEffect \} from 'react';\
+import \{ \
+  Leaf, \
+  ShoppingBag, \
+  MessageCircle, \
+  Droplets, \
+  Thermometer, \
+  ChevronRight, \
+  Send,\
+  X,\
+  Menu,\
+  Star,\
+  Wind,\
+  Timer\
+\} from 'lucide-react';\
+\
+const App = () => \{\
+  const [isChatOpen, setIsChatOpen] = useState(false);\
+  const [chatInput, setChatInput] = useState('');\
+  const [messages, setMessages] = useState([\
+    \{ role: 'ai', text: '\uc0\u24744 \u22909 \u65281 \u25105 \u26159 \u21335 \u24196 \u26690 \u31481 \u31565 \u23567 \u24171 \u25163 \u12290 \u20170 \u22825 \u24819 \u20102 \u35299 \u39854 \u25505 \u26690 \u31481 \u31565 \u30340 \u26009 \u29702 \u26041 \u24335 \u65292 \u36996 \u26159 \u24819 \u35426 \u21839 \u22914 \u20309 \u23384 \u25918 \u30495 \u31354 \u21253 \u35037 \u30340 \u31565 \u23376 \u21602 \u65311 ' \}\
+  ]);\
+  const [cartCount, setCartCount] = useState(0);\
+\
+  // \uc0\u27169 \u25836 \u21335 \u24196 \u31481 \u26519 \u21363 \u26178 \u29872 \u22659 \u25976 \u25818 \
+  const envData = \{\
+    temp: 22,\
+    humidity: 82,\
+    moisture: 65, // \uc0\u22303 \u22756 \u27700 \u20998 \
+    growthStage: 92, // \uc0\u25505 \u25910 \u39640 \u23792 \u36914 \u24230 \
+  \};\
+\
+  const products = [\
+    \{ \
+      id: 1, \
+      name: '\uc0\u21335 \u24196 \u25163 \u21085 \u39854 \u25505 \u26690 \u31481 \u31565  (5\u21488 \u26020 )', \
+      price: 650, \
+      img: 'https://images.unsplash.com/photo-1599021419847-d8a7a6aba5b4?auto=format&fit=crop&q=80&w=400', \
+      tag: '\uc0\u30070 \u26085 \u29694 \u25505 ',\
+      desc: '\uc0\u27599 \u26085 \u28165 \u26216 \u30001 \u32769 \u36786 \u35242 \u25163 \u25505 \u25688 \u65292 \u20445 \u30041 \u26368 \u21407 \u22987 \u30340 \u33030 \u29980 \u12290 '\
+    \},\
+    \{ \
+      id: 2, \
+      name: '\uc0\u39640 \u28331 \u27578 \u33740 \u30495 \u31354 \u21253 \u26690 \u31481 \u31565  (600g)', \
+      price: 180, \
+      img: 'https://images.unsplash.com/photo-1599021419847-d8a7a6aba5b4?auto=format&fit=crop&q=80&w=400', \
+      tag: '\uc0\u20027 \u23142 \u26368 \u24859 ',\
+      desc: '\uc0\u19981 \u21547 \u38450 \u33104 \u21137 \u65292 \u38283 \u23553 \u21363 \u29038 \u65292 \u36969 \u21512 \u24537 \u30860 \u30340 \u37117 \u24066 \u29983 \u27963 \u12290 '\
+    \},\
+    \{ \
+      id: 3, \
+      name: '\uc0\u21335 \u24196 \u38463 \u23332 \u21476 \u27861 \u26348 \u20094 \u31565 \u29255  (300g)', \
+      price: 350, \
+      img: 'https://images.unsplash.com/photo-1599021419847-d8a7a6aba5b4?auto=format&fit=crop&q=80&w=400', \
+      tag: '\uc0\u32147 \u20856 \u21476 \u21619 ',\
+      desc: '\uc0\u32147 \u36942 \u20908 \u26085 \u26262 \u38525 \u33258 \u28982 \u26333 \u26348 \u65292 \u29100 \u28271 \u29129 \u32905 \u30340 \u38728 \u39746 \u37197 \u35282 \u12290 '\
+    \},\
+    \{ \
+      id: 4, \
+      name: '\uc0\u26690 \u31481 \u31565 \u37240 \u31565 \u32114  (\u23478 \u24237 \u34399 )', \
+      price: 220, \
+      img: 'https://images.unsplash.com/photo-1599021419847-d8a7a6aba5b4?auto=format&fit=crop&q=80&w=400', \
+      tag: '\uc0\u38283 \u32963 \u39318 \u36984 ',\
+      desc: '\uc0\u21476 \u27861 \u30332 \u37237 \u65292 \u37240 \u29245 \u22816 \u21619 \u65292 \u28818 \u32905 \u32114 \u30340 \u26368 \u20339 \u25645 \u25803 \u12290 '\
+    \},\
+  ];\
+\
+  const handleSendMessage = () => \{\
+    if (!chatInput) return;\
+    const userMsg = \{ role: 'user', text: chatInput \};\
+    setMessages(prev => [...prev, userMsg]);\
+    setChatInput('');\
+\
+    // AI \uc0\u37007 \u36655 \u65306 \u23560 \u27880 \u26044 \u26690 \u31481 \u31565 \u35566 \u35426 \
+    setTimeout(() => \{\
+      let aiResponse = "\uc0\u36889 \u26159 \u38364 \u26044 \u26690 \u31481 \u31565 \u30340 \u22909 \u21839 \u38988 \u65281 \u26690 \u31481 \u31565 \u21547 \u26377 \u35920 \u23500 \u32406 \u32173 \u65292 \u26009 \u29702 \u21069 \u24314 \u35696 \u21487 \u20197 \u20808 \u29992 \u25163 \u25749 \u25104 \u26781 \u29376 \u26356 \u20837 \u21619 \u12290 \u35531 \u21839 \u24744 \u26159 \u24819 \u30475 \u21738 \u31278 \u28921 \u39146 \u26041 \u24335 \u21602 \u65311 ";\
+      if (chatInput.includes("\uc0\u24590 \u40636 \u29038 ") || chatInput.includes("\u39135 \u35676 ")) \{\
+        aiResponse = "\uc0\u25512 \u34214 \u24744 \u21487 \u20197 \u22039 \u35430 \u12302 \u27833 \u29148 \u26690 \u31481 \u31565 \u12303 \u12290 \u23559 \u31565 \u27573 \u33287 \u20116 \u33457 \u32905 \u12289 \u37292 \u27833 \u12289 \u20912 \u31958 \u24930 \u28779 \u24758 \u29038 \u65292 \u31565 \u23376 \u26371 \u21560 \u28415 \u27833 \u33026 \u39321 \u27683 \u65292 \u38750 \u24120 \u19979 \u39151 \u65281 ";\
+      \} else if (chatInput.includes("\uc0\u20445 \u23384 ")) \{\
+        aiResponse = "\uc0\u39854 \u25505 \u31565 \u24314 \u35696  3 \u22825 \u20839 \u39135 \u29992 \u23436 \u30050 \u65307 \u30495 \u31354 \u21253 \u35037 \u21487 \u24120 \u28331 \u23384 \u25918 \u19968 \u24180 \u65292 \u20294 \u38283 \u23553 \u24460 \u35531 \u21209 \u24517 \u20919 \u34255 \u20006 \u26044 \u20841 \u26085 \u20839 \u39135 \u29992 \u21908 \u12290 ";\
+      \}\
+      setMessages(prev => [...prev, \{ role: 'ai', text: aiResponse \}]);\
+    \}, 800);\
+  \};\
+\
+  return (\
+    <div className="min-h-screen bg-emerald-50/30 font-sans text-stone-800">\
+      \{/* Navigation */\}\
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-emerald-100">\
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">\
+          <div className="flex items-center gap-2">\
+            <div className="bg-emerald-700 p-1.5 rounded-lg">\
+              <Leaf className="text-white w-6 h-6" />\
+            </div>\
+            <span className="text-xl font-bold tracking-tight text-emerald-900">\uc0\u21335 \u24196 \u65294 \u26690 \u31481 \u21517 \u23478 </span>\
+          </div>\
+          <div className="hidden md:flex gap-8 font-medium text-stone-600">\
+            <a href="#" className="hover:text-emerald-700 transition">\uc0\u29986 \u22320 \u25925 \u20107 </a>\
+            <a href="#" className="hover:text-emerald-700 transition">\uc0\u26234 \u24935 \u31481 \u26519 </a>\
+            <a href="#" className="hover:text-emerald-700 transition">\uc0\u31565 \u39006 \u24066 \u38598 </a>\
+          </div>\
+          <div className="flex items-center gap-4">\
+            <div className="relative cursor-pointer p-2 hover:bg-emerald-100 rounded-full transition" onClick=\{() => setCartCount(c => c + 1)\}>\
+              <ShoppingBag className="w-6 h-6 text-emerald-800" />\
+              \{cartCount > 0 && (\
+                <span className="absolute top-0 right-0 bg-orange-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">\
+                  \{cartCount\}\
+                </span>\
+              )\}\
+            </div>\
+            <Menu className="md:hidden w-6 h-6" />\
+          </div>\
+        </div>\
+      </nav>\
+\
+      \{/* Hero Section */\}\
+      <header className="relative h-[600px] flex items-center justify-center overflow-hidden">\
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10" />\
+        <img \
+          src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1600" \
+          className="absolute inset-0 w-full h-full object-cover scale-105"\
+          alt="Nanchuang Bamboo Forest"\
+        />\
+        <div className="relative z-20 text-center text-white px-4 max-w-4xl">\
+          <span className="inline-block bg-emerald-600/80 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-bold mb-6 tracking-widest uppercase">\uc0\u28304 \u33258 \u33495 \u26647 \u21335 \u24196 \u39640 \u28023 \u25300 \u31481 \u26519 </span>\
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-2xl">\uc0\u30334 \u24180 \u20659 \u25215 \u65292 \u19968 \u21697 \u26690 \u31481 </h1>\
+          <p className="text-lg md:text-2xl mb-10 opacity-95 leading-relaxed drop-shadow-md">\uc0\u32080 \u21512 \u26234 \u24935 \u36786 \u26989 \u24863 \u28204 \u31995 \u32113 \u65292 \u25105 \u20497 \u28858 \u24744 \u25361 \u36984 \u26368 \u39854 \u23273 \u12289 \u26368 \u32020 \u31929 \u30340 \u21335 \u24196 \u29808 \u23542 \u12290 </p>\
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">\
+            <button className="bg-white text-emerald-900 px-10 py-4 rounded-full font-bold transition-all hover:bg-emerald-50 shadow-xl flex items-center justify-center gap-2">\
+              \uc0\u21069 \u24448 \u24066 \u38598  <ChevronRight className="w-5 h-5" />\
+            </button>\
+            <button className="bg-emerald-700/50 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-full font-bold transition-all hover:bg-emerald-700/70 shadow-xl">\
+              \uc0\u21697 \u29260 \u29702 \u24565 \
+            </button>\
+          </div>\
+        </div>\
+      </header>\
+\
+      \{/* Growth Dashboard - Focus on Bamboo */\}\
+      <section className="py-20 max-w-7xl mx-auto px-4">\
+        <div className="text-center mb-16">\
+          <h2 className="text-3xl md:text-4xl font-bold text-emerald-900 mb-4">AI \uc0\u26234 \u24935 \u26519 \u22580 \u30435 \u25511 </h2>\
+          <p className="text-stone-500 max-w-2xl mx-auto">\uc0\u25105 \u20497 \u22312 \u21335 \u24196 \u31481 \u26519 \u37096 \u32626 \u20102 \u22810 \u20491 \u24863 \u28204 \u31680 \u40670 \u65292 \u21363 \u26178 \u25976 \u25818 \u30906 \u20445 \u27599 \u19968 \u26681 \u26690 \u31481 \u31565 \u37117 \u22312 \u26368 \u20339 \u29872 \u22659 \u19979 \u25104 \u38263 \u12290 </p>\
+        </div>\
+\
+        <div className="grid lg:grid-cols-3 gap-8">\
+          \{/* Environment Stats */\}\
+          <div className="lg:col-span-1 grid grid-cols-2 gap-4">\
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-emerald-50 flex flex-col items-center justify-center text-center">\
+              <div className="bg-orange-100 p-3 rounded-2xl mb-4"><Thermometer className="text-orange-600 w-6 h-6" /></div>\
+              <span className="text-stone-400 text-xs mb-1 uppercase tracking-wider">\uc0\u26862 \u26519 \u27683 \u28331 </span>\
+              <span className="text-2xl font-bold text-stone-800">\{envData.temp\}\'b0C</span>\
+            </div>\
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-emerald-50 flex flex-col items-center justify-center text-center">\
+              <div className="bg-blue-100 p-3 rounded-2xl mb-4"><Droplets className="text-blue-600 w-6 h-6" /></div>\
+              <span className="text-stone-400 text-xs mb-1 uppercase tracking-wider">\uc0\u31354 \u27683 \u28629 \u24230 </span>\
+              <span className="text-2xl font-bold text-stone-800">\{envData.humidity\}%</span>\
+            </div>\
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-emerald-50 flex flex-col items-center justify-center text-center">\
+              <div className="bg-emerald-100 p-3 rounded-2xl mb-4"><Wind className="text-emerald-600 w-6 h-6" /></div>\
+              <span className="text-stone-400 text-xs mb-1 uppercase tracking-wider">\uc0\u22303 \u22756 \u27700 \u20998 </span>\
+              <span className="text-2xl font-bold text-stone-800">\{envData.moisture\}%</span>\
+            </div>\
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-emerald-50 flex flex-col items-center justify-center text-center">\
+              <div className="bg-purple-100 p-3 rounded-2xl mb-4"><Timer className="text-purple-600 w-6 h-6" /></div>\
+              <span className="text-stone-400 text-xs mb-1 uppercase tracking-wider">\uc0\u25505 \u25910 \u20498 \u25976 </span>\
+              <span className="text-2xl font-bold text-stone-800">12\uc0\u22825 </span>\
+            </div>\
+          </div>\
+\
+          \{/* Growth Progress */\}\
+          <div className="lg:col-span-2 bg-emerald-900 rounded-3xl shadow-xl p-8 text-white relative overflow-hidden">\
+            <div className="absolute top-0 right-0 p-8 opacity-10">\
+              <Leaf className="w-48 h-48" />\
+            </div>\
+            <div className="relative z-10">\
+              <div className="flex justify-between items-center mb-8">\
+                <div>\
+                  <h3 className="text-2xl font-bold mb-1">\uc0\u30070 \u23395 \u26690 \u31481 \u31565 \u29983 \u38263 \u29376 \u24907 </h3>\
+                  <p className="text-emerald-200 text-sm">\uc0\u30435 \u28204 \u21312 \u22495 \u65306 \u21335 \u24196 \u31070 \u20185 \u35895 \u21608 \u37002 \u31481 \u26519 </p>\
+                </div>\
+                <div className="bg-emerald-400/20 px-3 py-1 rounded-full border border-emerald-400 text-xs font-bold animate-pulse">\
+                  LIVE \uc0\u23526 \u26178 \u30435 \u28204 \
+                </div>\
+              </div>\
+              \
+              <div className="space-y-8">\
+                <div>\
+                  <div className="flex justify-between items-end mb-3">\
+                    <span className="text-emerald-100 font-medium">\uc0\u31481 \u26519 \u25505 \u25910 \u25104 \u29087 \u24230 </span>\
+                    <span className="text-3xl font-bold">\{envData.growthStage\}%</span>\
+                  </div>\
+                  <div className="w-full bg-emerald-950 h-4 rounded-full p-1 border border-emerald-800">\
+                    <div className="bg-gradient-to-r from-emerald-500 to-emerald-300 h-full rounded-full transition-all duration-1000" style=\{\{ width: `$\{envData.growthStage\}%` \}\} />\
+                  </div>\
+                </div>\
+\
+                <div className="grid grid-cols-3 gap-4 border-t border-emerald-800 pt-8">\
+                  <div className="text-center">\
+                    <p className="text-emerald-300 text-xs mb-1 uppercase">\uc0\u38928 \u20272 \u29986 \u37327 </p>\
+                    <p className="font-bold text-lg">\uc0\u20778 \u26044 \u24448 \u24180 </p>\
+                  </div>\
+                  <div className="text-center border-x border-emerald-800">\
+                    <p className="text-emerald-300 text-xs mb-1 uppercase">\uc0\u21475 \u24863 \u35413 \u28204 </p>\
+                    <p className="font-bold text-lg">\uc0\u26997 \u33268 \u33030 \u23273 </p>\
+                  </div>\
+                  <div className="text-center">\
+                    <p className="text-emerald-300 text-xs mb-1 uppercase">\uc0\u36786 \u34277 \u27544 \u30041 </p>\
+                    <p className="font-bold text-lg text-emerald-400">\uc0\u38646 \u27298 \u20986 </p>\
+                  </div>\
+                </div>\
+              </div>\
+            </div>\
+          </div>\
+        </div>\
+      </section>\
+\
+      \{/* Products Grid */\}\
+      <section className="py-24 bg-white">\
+        <div className="max-w-7xl mx-auto px-4">\
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">\
+            <div>\
+              <h2 className="text-3xl font-bold text-stone-900 mb-2">\uc0\u26690 \u31481 \u31565 \u20840 \u31995 \u21015 \u29986 \u21697 </h2>\
+              <p className="text-stone-500">\uc0\u24478 \u39854 \u25505 \u21040 \u31934 \u35069 \u65292 \u28415 \u36275 \u24744 \u23565 \u21335 \u24196 \u32654 \u21619 \u30340 \u25152 \u26377 \u24819 \u20687 </p>\
+            </div>\
+            <div className="flex gap-2">\
+              <button className="px-4 py-2 rounded-full border border-stone-200 text-sm font-medium hover:bg-emerald-700 hover:text-white transition">\uc0\u25152 \u26377 \u29986 \u21697 </button>\
+              <button className="px-4 py-2 rounded-full border border-stone-200 text-sm font-medium hover:bg-emerald-700 hover:text-white transition">\uc0\u39854 \u39135 \u38928 \u36092 </button>\
+              <button className="px-4 py-2 rounded-full border border-stone-200 text-sm font-medium hover:bg-emerald-700 hover:text-white transition">\uc0\u21152 \u24037 \u21697 </button>\
+            </div>\
+          </div>\
+\
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">\
+            \{products.map(p => (\
+              <div key=\{p.id\} className="group cursor-pointer">\
+                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden mb-6 shadow-md bg-stone-100">\
+                  <img src=\{p.img\} alt=\{p.name\} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />\
+                  <div className="absolute top-4 left-4">\
+                    <span className="bg-white/90 backdrop-blur-sm text-emerald-900 text-[10px] px-3 py-1 rounded-full font-bold shadow-sm uppercase tracking-tighter">\
+                      \{p.tag\}\
+                    </span>\
+                  </div>\
+                  <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">\
+                    <button onClick=\{() => setCartCount(c => c + 1)\} className="w-full bg-white text-emerald-900 py-3 rounded-2xl font-bold shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform">\
+                      \uc0\u21152 \u20837 \u36092 \u29289 \u36554 \
+                    </button>\
+                  </div>\
+                </div>\
+                <div className="px-2">\
+                  <div className="flex items-center gap-1 mb-1 text-orange-400">\
+                    \{[1,2,3,4,5].map(s => <Star key=\{s\} className="w-3 h-3 fill-current" />)\}\
+                  </div>\
+                  <h3 className="font-bold text-lg text-stone-800 mb-1">\{p.name\}</h3>\
+                  <p className="text-stone-400 text-sm mb-3 line-clamp-1">\{p.desc\}</p>\
+                  <span className="text-emerald-700 font-black text-xl">NT$ \{p.price\}</span>\
+                </div>\
+              </div>\
+            ))\}\
+          </div>\
+        </div>\
+      </section>\
+\
+      \{/* AI Chat Bot */\}\
+      <div className=\{`fixed bottom-8 right-8 z-[60] flex flex-col items-end transition-all duration-500`\}>\
+        \{isChatOpen && (\
+          <div className="bg-white w-80 md:w-96 h-[550px] shadow-2xl rounded-[2rem] border border-emerald-100 mb-6 flex flex-col overflow-hidden animate-in slide-in-from-bottom-8">\
+            <div className="bg-emerald-800 text-white p-6 flex justify-between items-center">\
+              <div className="flex items-center gap-3">\
+                <div className="bg-white/20 p-2 rounded-xl backdrop-blur-sm">\
+                  <MessageCircle className="w-6 h-6" />\
+                </div>\
+                <div>\
+                  <p className="font-bold text-sm">\uc0\u21335 \u24196 \u26690 \u31481  AI \u23560 \u23478 </p>\
+                  <p className="text-[10px] opacity-70">\uc0\u27491 \u22312 \u32218 \u19978 \u28858 \u24744 \u26381 \u21209 </p>\
+                </div>\
+              </div>\
+              <button onClick=\{() => setIsChatOpen(false)\} className="hover:bg-white/10 p-2 rounded-full transition">\
+                <X className="w-5 h-5" />\
+              </button>\
+            </div>\
+            \
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-stone-50/50">\
+              \{messages.map((m, i) => (\
+                <div key=\{i\} className=\{`flex $\{m.role === 'user' ? 'justify-end' : 'justify-start'\}`\}>\
+                  <div className=\{`max-w-[85%] p-4 rounded-2xl text-sm leading-relaxed $\{\
+                    m.role === 'user' \
+                      ? 'bg-emerald-700 text-white shadow-emerald-200' \
+                      : 'bg-white text-stone-700 border border-emerald-50 shadow-sm'\
+                  \}`\}>\
+                    \{m.text\}\
+                  </div>\
+                </div>\
+              ))\}\
+            </div>\
+\
+            <div className="p-4 bg-white border-t border-emerald-50 flex gap-3">\
+              <input \
+                type="text" \
+                value=\{chatInput\}\
+                onChange=\{(e) => setChatInput(e.target.value)\}\
+                onKeyPress=\{(e) => e.key === 'Enter' && handleSendMessage()\}\
+                placeholder="\uc0\u35426 \u21839 \u39135 \u35676 \u12289 \u29986 \u22320 \u12289 \u25110 \u26159 \u20445 \u23384 \u26041 \u24335 ..."\
+                className="flex-1 bg-stone-100 border-none rounded-2xl px-5 text-sm focus:ring-2 focus:ring-emerald-500 transition-all"\
+              />\
+              <button \
+                onClick=\{handleSendMessage\}\
+                className="bg-emerald-800 text-white p-3 rounded-2xl hover:bg-emerald-900 shadow-lg shadow-emerald-100 transition-all"\
+              >\
+                <Send className="w-5 h-5" />\
+              </button>\
+            </div>\
+          </div>\
+        )\}\
+        \
+        <button \
+          onClick=\{() => setIsChatOpen(!isChatOpen)\}\
+          className="bg-emerald-800 text-white p-5 rounded-3xl shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-3 border-2 border-white/20"\
+        >\
+          \{isChatOpen ? <X className="w-6 h-6" /> : (\
+            <>\
+              <div className="relative">\
+                <MessageCircle className="w-7 h-7" />\
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-emerald-800"></span>\
+              </div>\
+              <span className="font-bold tracking-wide">\uc0\u35566 \u35426  AI \u31565 \u23560 \u23478 </span>\
+            </>\
+          )\}\
+        </button>\
+      </div>\
+\
+      <footer className="bg-emerald-950 text-emerald-200/60 py-20 px-4">\
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">\
+          <div className="md:col-span-2">\
+            <div className="flex items-center gap-2 text-white mb-6">\
+              <Leaf className="w-8 h-8 text-emerald-400" />\
+              <span className="text-2xl font-bold">\uc0\u21335 \u24196 \u65294 \u26690 \u31481 \u21517 \u23478 </span>\
+            </div>\
+            <p className="text-sm leading-relaxed mb-8 max-w-sm">\
+              \uc0\u25105 \u20497 \u22312 \u33495 \u26647 \u21335 \u24196 \u30340 \u39640 \u28023 \u25300 \u31481 \u26519 \u20013 \u65292 \u20197 \u26234 \u24935 \u31185 \u25216 \u33287 \u20659 \u32113 \u25216 \u34269 \u30340 \u23436 \u32654 \u34701 \u21512 \u65292 \u23559 \u26368 \u26032 \u39854 \u12289 \u26368 \u32654 \u21619 \u30340 \u26690 \u31481 \u31565 \u30452 \u36865 \u24744 \u30340 \u39184 \u26700 \u12290 \
+            </p>\
+            <div className="flex gap-4">\
+              \{/* Social icons placeholder */\}\
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer">FB</div>\
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer">IG</div>\
+              <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition cursor-pointer">Line</div>\
+            </div>\
+          </div>\
+          <div>\
+            <h4 className="text-white font-bold mb-6 text-lg tracking-wide">\uc0\u23560 \u26989 \u23566 \u35261 </h4>\
+            <ul className="space-y-4 text-sm font-medium">\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u38364 \u26044 \u21335 \u24196 \u26690 \u31481 </a></li>\
+              <li><a href="#" className="hover:text-emerald-400 transition">AI \uc0\u26234 \u24935 \u26519 \u22580 </a></li>\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u29983 \u29986 \u23653 \u27511 \u26597 \u35426 </a></li>\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u26009 \u29702 \u39135 \u35676 \u38598 </a></li>\
+            </ul>\
+          </div>\
+          <div>\
+            <h4 className="text-white font-bold mb-6 text-lg tracking-wide">\uc0\u39015 \u23458 \u26381 \u21209 </h4>\
+            <ul className="space-y-4 text-sm font-medium">\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u36939 \u36865 \u35498 \u26126 </a></li>\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u36864 \u25563 \u36008 \u38920 \u30693 </a></li>\
+              <li><a href="#" className="hover:text-emerald-400 transition">\uc0\u24120 \u35211 \u21839 \u38988 </a></li>\
+              <li><p className="mt-4 text-emerald-400">\uc0\u23458 \u26381 \u38651 \u35441 \u65306 (037) 123-456</p></li>\
+            </ul>\
+          </div>\
+        </div>\
+        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-emerald-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-widest">\
+          <span>\'a9 2024 Nanchuang Bamboo Master. All rights reserved.</span>\
+          <div className="flex gap-6">\
+            <a href="#" className="hover:text-white transition">\uc0\u38577 \u31169 \u26781 \u27454 </a>\
+            <a href="#" className="hover:text-white transition">\uc0\u26381 \u21209 \u21332 \u35696 </a>\
+          </div>\
+        </div>\
+      </footer>\
+    </div>\
+  );\
+\};\
+\
+export default App;}
